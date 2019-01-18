@@ -113,7 +113,7 @@ class Truevo
         );
     }
 
-    public function getCodesSuccessfully()
+    public function resultCodesSuccessfully()
     {
         return array(
             '000.000.000',
@@ -129,7 +129,7 @@ class Truevo
         );
     }
 
-    public function getCodesPending()
+    public function resultCodesPending()
     {
         return array(
             '000.200.000',
@@ -142,7 +142,7 @@ class Truevo
 
     /**
      * @param $request
-     * @return mixed
+     * @return bool|string
      * @throws TruevoException
      */
     private function _exec($request)
@@ -161,7 +161,9 @@ class Truevo
 
         if ($api_http_code !== 200){
             if (isset($response->result)){
-                throw new  TruevoException($response->result->description, $api_http_code);
+                $description =$response->result->description;
+                $code_error = $response->result->code;
+                throw new  TruevoException("$description code: $code_error", $api_http_code);
             }
         }
 
