@@ -29,9 +29,8 @@ class plgJ2StorePayment_truevo extends J2StorePaymentPlugin
     protected $_user_password;
     protected $_entity_id;
     public $code_arr = array();
-    private $_isLog = true;
+    private $_isLog = false;
     var $_j2version = null;
-
     /**
      * plgJ2StorePayment_truevo constructor.
      * @param $subject
@@ -41,7 +40,6 @@ class plgJ2StorePayment_truevo extends J2StorePaymentPlugin
     {
         parent::__construct($subject, $config);
         $this->loadLanguage('', JPATH_ADMINISTRATOR);
-
         $mode = $this->params->get('sandbox', 0);
         if(!$mode) {
             $this->_user_login = trim($this->params->get('truevo_user_login'));
@@ -52,8 +50,11 @@ class plgJ2StorePayment_truevo extends J2StorePaymentPlugin
             $this->_user_password = trim($this->params->get('truevo_test_user_password'));
             $this->_entity_id = trim($this->params->get('truevo_test_entity_id'));
         }
-    }
 
+        if($this->params->get('debug', 0)) {
+            $this->_isLog = true;
+        }
+    }
     /**
      * @param array $data
      * @return string
@@ -65,10 +66,8 @@ class plgJ2StorePayment_truevo extends J2StorePaymentPlugin
         $vars->cctype_input   = $this->_cardTypesField();
         $vars->onselection_text = $this->params->get('onselection', '');
         $html = $this->_getLayout('form', $vars);
-
         return $html;
     }
-
     /**
      * @param array $submitted_values
      * @return JObject|obj
@@ -78,7 +77,6 @@ class plgJ2StorePayment_truevo extends J2StorePaymentPlugin
         $object = new JObject();
         $object->error = false;
         $object->message = '';
-
         foreach ($submitted_values as $key=>$value)
         {
             switch ($key)
@@ -122,10 +120,8 @@ class plgJ2StorePayment_truevo extends J2StorePaymentPlugin
                     break;
             }
         }
-
         return $object;
     }
-
     function _cardTypesField( $field='cardtype', $default='', $options='' )
     {
         $types = array();
@@ -136,11 +132,9 @@ class plgJ2StorePayment_truevo extends J2StorePaymentPlugin
         foreach($card_types as $type) {
             $types[] = JHTML::_('select.option', $type, JText::_( "J2STORE_TRUEVO_".strtoupper($type) ) );
         }
-
         $return = JHTML::_('select.genericlist', $types, $field, $options, 'value','text', $default);
         return $return;
     }
-
     /**
      * @param array $data
      * @return string
@@ -148,28 +142,23 @@ class plgJ2StorePayment_truevo extends J2StorePaymentPlugin
      */
     public function _prePayment( $data )
     {
+
+        $this->_log( print_r($data, true), 'data received prepayment' );
         $app = JFactory::getApplication();
         $currency = J2Store::currency();
-
         // Prepare the payment form
         $vars = new JObject;
-
-
         $vars->url = JRoute::_("index.php?option=com_j2store&view=checkout");
         $vars->order_id = $data['order_id'];
         $vars->orderpayment_id = $data['orderpayment_id'];
         $vars->orderpayment_type = $this->_element;
-
         F0FTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_j2store/tables');
         $order = F0FTable::getInstance('Order', 'J2StoreTable');
         $order->load($data['orderpayment_id']);
-
         $currency_values= $this->getCurrency($order);
         $amount = J2Store::currency()->format($order->order_total, $currency_values['currency_code'], $currency_values['currency_value'], false);
         $vars->amount = $amount*100;
         $vars->currency_code =$currency_values['currency_code'];
-
-
         $vars->cardholder = $app->input->getString("cardholder");
         $vars->cardtype = $app->input->getString("cardtype");
         $vars->cardnum = $app->input->getString("cardnum");
@@ -177,18 +166,14 @@ class plgJ2StorePayment_truevo extends J2StorePaymentPlugin
         $vars->cardyear = $app->input->getString("year");
         $vars->cardcvv = $app->input->getString("cardcvv");
         $vars->cardnum_last4 = substr( $vars->cardnum, -4 );
-
-
         $vars->display_name = $this->params->get('display_name', 'PLG_J2STORE_PAYMENT_PAYMILL');
         $vars->onbeforepayment_text = $this->params->get('onbeforepayment', '');
         $vars->button_text = $this->params->get('button_text', 'J2STORE_PLACE_ORDER');
         $vars->sandbox = $this->params->get('sandbox', 0);
         // Lets check the values submitted
         $html = $this->_getLayout('prepayment', $vars);
-
         return $html;
     }
-
     /**
      * @param array $data
      * @return string
@@ -200,7 +185,6 @@ class plgJ2StorePayment_truevo extends J2StorePaymentPlugin
         $app = JFactory::getApplication();
         $vars = new JObject();
         $paction = $app->input->getString('paction');
-
         switch ($paction)
         {
             case 'process_sofort':
@@ -224,19 +208,15 @@ class plgJ2StorePayment_truevo extends J2StorePaymentPlugin
                 $html = $this->_getLayout('message', $vars);
                 break;
         }
-
         return $html;
     }
-
     public function _process_sofort()
     {
         $body = @file_get_contents('php://input');
         $data = json_decode($body);
         http_response_code(200); // Return 200 OK
         $this->_log ( print_r($data, true), 'payment notify' );
-
     }
-
     /**
      * @return array
      * @throws Exception
@@ -246,11 +226,12 @@ class plgJ2StorePayment_truevo extends J2StorePaymentPlugin
         if (! JRequest::checkToken ()) {
             return $this->_renderHtml ( JText::_ ( 'J2STORE_TRUEVO_INVALID_TOKEN' ) );
         }
-
         $app = JFactory::getApplication ();
         $data = $app->input->getArray( $_POST );
         $json = array();
         $errors = array();
+
+        $this->_log( print_r($data, true), 'data received for init process payment' );
 
         // Get order information
         F0FTable::addIncludePath ( JPATH_ADMINISTRATOR . '/components/com_j2store/tables' );
@@ -258,7 +239,6 @@ class plgJ2StorePayment_truevo extends J2StorePaymentPlugin
         if ($order->load ( array (
             'order_id' => $data ['order_id']
         ) )) {
-
             $currency_values = $this->getCurrency ( $order );
             $amount = J2Store::currency()->format($order->order_total, $currency_values['currency_code'], $currency_values['currency_value'], false);
             $orderinfo = $order->getOrderInformation();
@@ -269,26 +249,20 @@ class plgJ2StorePayment_truevo extends J2StorePaymentPlugin
             $address2 = empty($orderinfo->shipping_address_2) ? $orderinfo->billing_address_2 : $orderinfo->shipping_address_2;
             $city = empty($orderinfo->shipping_city) ? $orderinfo->billing_city : $orderinfo->shipping_city;
             $postcode = empty($orderinfo->shipping_zip) ? $orderinfo->billing_zip : $orderinfo->shipping_zip;
-
             if (empty($orderinfo->shipping_zone_id)){
                 $state = substr($this->getZoneById($orderinfo->billing_zone_id)->zone_code, 0, 2);
             }else{
                 $state = substr($this->getZoneById($orderinfo->shipping_zone_id)->zone_code, 0, 2);
             }
-
             if (empty($orderinfo->shipping_country_id)){
                 $this->getCountryById($orderinfo->billing_country_id)->country_isocode_2;
             }else{
                 $country = $this->getCountryById($orderinfo->shipping_country_id)->country_isocode_2;
             }
-
-
             $truevo = new Truevo($this->_user_login, $this->_user_password, $this->_entity_id);
             $sandbox = (bool)(int)$data['sandbox'];
             $truevo->sandbox_mode($sandbox);
-
             $notificationUrl = JURI::root() . 'index.php?option=com_j2store&view=checkout&task=confirmPayment&orderpayment_type=payment_truevo&paction=process_sofort';
-
             $params = array(
                 'amount' => $amount,
                 'currency' => $currency_values['currency_code'],
@@ -312,38 +286,33 @@ class plgJ2StorePayment_truevo extends J2StorePaymentPlugin
                 'notificationUrl' => urldecode($notificationUrl)
             );
 
+            $this->_log( print_r($params, true), 'params request payment' );
+
             try{
                 $data = $truevo->payment($params);
                 $this->_log ( print_r($data, true), 'payment response' );
-
                 if (in_array($data->result->code,$truevo->getCodesSuccessfully())){
                     $order->payment_complete();
                 }elseif (in_array($data->result->code, $truevo->getCodesPending())){
                     $order->update_status ( $data->result->description);
                 }
-
             }catch (\Truevo\TruevoException $exception){
                 $msg = $exception->getMessage();
                 $errors[] = $msg;
                 $this->_log ( $msg, 'payment response error' );
             }
-
             if (empty ( $errors )) {
                 $json ['success'] = JText::_ ( $this->params->get ( 'onafterpayment', '' ) );
                 $json ['redirect'] = JRoute::_ ( 'index.php?option=com_j2store&view=checkout&task=confirmPayment&orderpayment_type=' . $this->_element . '&paction=display' );
             }
-
             if (count ( $errors )) {
                 $json ['error'] = implode ( "\n", $errors );
             }
         }else {
             $json ['error'] = JText::_ ( 'J2STORE_TRUEVO_INVALID_ORDER' );
         }
-
         return $json;
-
     }
-
     public function _log($text, $type = 'message')
     {
         if ($this->_isLog)
@@ -351,7 +320,6 @@ class plgJ2StorePayment_truevo extends J2StorePaymentPlugin
             {
                 $file = JPATH_ROOT . "/cache/{$this->_element}.log";
                 $date = JFactory::getDate();
-
                 $f = fopen($file, 'a');
                 fwrite($f, "\n\n" . $date->format('Y-m-d H:i:s'));
                 fwrite($f, "\n" . $type . ': ' . $text);

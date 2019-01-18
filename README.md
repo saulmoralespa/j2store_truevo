@@ -5,8 +5,14 @@ Integration of truevo payment for j2store, joomla.
 
 ## Table of Contents
 
+* [Requirements](#requirements)
 * [Installation](#installation)
 * [Configuration](#configuration)
+
+## Requirements ##
+
+* PHP >= 5.6.0
+* Use SSl certificate
 
 ## Installation ##
 

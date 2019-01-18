@@ -65,8 +65,13 @@
                 <field name="oncancelpayment" type="textarea" cols="10" rows="5" default="" label="j2store_on_cancel_payment_label" description="j2store_on_cancel_payment_desc"/>
 
                 <field type="spacer" />
-
                 <field name="button_text" type="text" size="50" default="J2STORE_PLACE_ORDER" label="j2store_button_text_label" description="j2store_button_text_desc" />
+
+                <field type="spacer" />
+                <field name="debug" type="radio" default="0" label="j2store_debug" description="j2store_debug_desc">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </field>
 
             </fieldset>
         </fields>
