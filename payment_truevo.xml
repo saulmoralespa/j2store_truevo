@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="j2store" method="upgrade">
+    <name>Truevo</name>
+    <version>1.0.0</version>
+    <creationDate>January 2019</creationDate>
+    <author>Saul Morales Pacheco</author>
+    <authorEmail>info@saulmoralespa.com</authorEmail>
+    <authorUrl>http://saulmoralespa.com</authorUrl>
+    <copyright>2019 created by Saul Morales Pacheco</copyright>
+    <license>GNU General Public License v3 or later</license>
+    <description>J2STORE_TRUEVO_PAYMENT_DESC</description>
+    <files>
+        <filename plugin="payment_truevo">payment_truevo.php</filename>
+        <folder>library</folder>
+        <folder>assets</folder>
+        <folder>payment_truevo</folder>
+    </files>
+    <languages>
+        <language tag="en-GB">languages/en-GB.plg_j2store_payment_truevo.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="display_name" type="text" size="30" default="" label="j2store_plugin_display_name" description="j2store_plugin_display_name_desc"/>
+                <field name="display_image" type="media" label="j2store_plugin_display_image" description="j2store_plugin_display_image_desc"/>
+                <field name="truevo_user_login" type="text" size="30" default="" label="J2STORE_TRUEVO_USER_LOGIN" description="J2STORE_TRUEVO_USER_LOGIN_DESC"/>
+                <field name="truevo_user_password" type="text" size="30" default="" label="J2STORE_TRUEVO_USER_PASSWORD" description="J2STORE_TRUEVO_USER_PASSWORD_DESC"/>
+                <field name="truevo_entity_id" type="text" size="30" default="" label="J2STORE_TRUEVO_ENTITY_ID" description="J2STORE_TRUEVO_ENTITY_ID_DESC"/>
+
+                <field type="spacer" />
+                <field name="sandbox" type="radio" default="0" label="J2STORE_TRUEVO_SANDBOX" description="J2STORE_TRUEVO_SANDBOX_DESC">
+                    <option value="0">J2STORE_NO</option>
+                    <option value="1">J2STORE_YES</option>
+                </field>
+
+                <field type="spacer" />
+                <field name="truevo_test_user_login" type="text" size="30" default="" label="J2STORE_TRUEVO_TEST_USER_LOGIN" description="J2STORE_TRUEVO_TEST_USER_LOGIN_DESC"/>
+                <field name="truevo_test_user_password" type="text" size="30" default="" label="J2STORE_TRUEVO_TEST_USER_PASSWORD" description="J2STORE_TRUEVO_TEST_USER_PASSWORD_DESC"/>
+                <field name="truevo_test_entity_id" type="text" size="30" default="" label="J2STORE_TRUEVO_TEST_ENTITY_ID" description="J2STORE_TRUEVO_TEST_ENTITY_ID_DESC"/>
+
+                <field type="spacer" />
+                <field name="card_types" type="list" multiple="multiple" default="Visa,Mastercard" label="j2store_sagepay_card_type" description="j2store_sagepay_card_type_desc">
+                    <option value="VISA">Visa</option>
+                    <option value="VISADEBIT">Visa debit</option>
+                    <option value="VISAELECTRON">Visa Electron</option>
+                    <option value="MASTERCARD">MasterCard</option>
+                    <option value="AMEX">American Express</option>
+                    <option value="MAESTRO">Maestro</option>
+                    <option value="DISCOVER">Discover</option>
+                    <option value="DINERS">Diners</option>
+                    <option value="JCB">JCB</option>
+                    <option value="ELO">ELO</option>
+                    <option value="VPAY">VPAY</option>
+                    <option value="CARTEBLEUE">Carte Bleue</option>
+                    <option value="CARTEBANCAIRE">Carte bancaire</option>
+                    <option value="DIRECTDEBIT_SEPA">SEPA Direct Debit</option>
+                    <option value="DANKORT">Dankort</option>
+                </field>
+
+                <field type="spacer"/>
+                <field name="onselection" type="textarea" cols="10" rows="5" default="" label="j2store_on_selection_label" description="j2store_on_selection_desc"/>
+                <field name="onbeforepayment" type="textarea" cols="10" rows="5" default="" label="j2store_on_before_payment_label" description="j2store_on_before_payment_desc"/>
+                <field name="onafterpayment" type="textarea" cols="10" rows="5" default="" label="j2store_on_after_payment_label" description="j2store_on_after_payment_desc"/>
+                <field name="onerrorpayment" type="textarea" cols="10" rows="5" default="" label="j2store_on_error_payment_label" description="j2store_on_error_payment_desc"/>
+                <field name="oncancelpayment" type="textarea" cols="10" rows="5" default="" label="j2store_on_cancel_payment_label" description="j2store_on_cancel_payment_desc"/>
+
+                <field type="spacer" />
+
+                <field name="button_text" type="text" size="50" default="J2STORE_PLACE_ORDER" label="j2store_button_text_label" description="j2store_button_text_desc" />
+
+            </fieldset>
+        </fields>
+    </config>
+</extension>
