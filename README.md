@@ -29,4 +29,4 @@ ethods > Truevo** and enable plugin.
 ## Configuration ##
 
 ### 1. Enter the configuration menu of the payment method ###
-![Enter the configuration menu of the payment method](https://1.bp.blogspot.com/-NVjgw-z1ie4/XEHPnFRxqJI/AAAAAAAACoc/TssV81tF3HQEDZ6R7vBwvdgDvsWWgMXOACLcBGAs/s1600/truevo.png)
+![Enter the configuration menu of the payment method](https://4.bp.blogspot.com/-3joSaJCNDYw/XEI0pe3ShLI/AAAAAAAACo0/Z5APDeRNlvEvx-4iBbGDXvkj1gmAZtRUwCLcBGAs/s1600/truevo.png)
