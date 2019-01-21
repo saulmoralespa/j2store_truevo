@@ -43,7 +43,7 @@
                     <option value="VISA">Visa</option>
                     <option value="VISADEBIT">Visa debit</option>
                     <option value="VISAELECTRON">Visa Electron</option>
-                    <option value="MASTERCARD">MasterCard</option>
+                    <option value="MASTER">MasterCard</option>
                     <option value="AMEX">American Express</option>
                     <option value="MAESTRO">Maestro</option>
                     <option value="DISCOVER">Discover</option>

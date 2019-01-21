@@ -15,39 +15,39 @@ defined('_JEXEC') or die('Restricted access');
 <div class="note">
     <p><?php echo JText::_($vars->onselection_text); ?></p>
 </div>
-<table id="truevo_form" class="table">
+<!--<table id="truevo_form" class="table">
     <tr>
-        <td class="field_name"><?php echo JText::_( 'J2STORE_CREDITCARD_TYPE' ) ?></td>
-        <td><?php echo $vars->cctype_input ?></td>
+        <td class="field_name"><?php /*echo JText::_( 'J2STORE_CREDITCARD_TYPE' ) */?></td>
+        <td><?php /*echo $vars->cctype_input */?></td>
     </tr>
     <tr>
-        <td class="field_name"><?php echo JText::_( 'J2STORE_CARDHOLDER_NAME' ) ?></td>
+        <td class="field_name"><?php /*echo JText::_( 'J2STORE_CARDHOLDER_NAME' ) */?></td>
         <td><input type="text" class="required" name="cardholder"
                    size="35"
-                   value="<?php echo !empty($vars->prepop['x_card_holder']) ? ($vars->prepop['x_card_holder']) : '' ?>"
-                   title="<?php echo JText::_('J2STORE_CARDHOLDER_VALIDATION_ERROR_NAME'); ?>"
+                   value="<?php /*echo !empty($vars->prepop['x_card_holder']) ? ($vars->prepop['x_card_holder']) : '' */?>"
+                   title="<?php /*echo JText::_('J2STORE_CARDHOLDER_VALIDATION_ERROR_NAME'); */?>"
             />
             <div class="j2error"></div>
         </td>
     </tr>
     <tr>
-        <td class="field_name"><?php echo JText::_( 'J2STORE_CARD_NUMBER' ) ?></td>
+        <td class="field_name"><?php /*echo JText::_( 'J2STORE_CARD_NUMBER' ) */?></td>
         <td><input type="text" class="required number"
                    name="cardnum"
                    size="35"
-                   value="<?php echo !empty($vars->prepop['x_card_num']) ? ($vars->prepop['x_card_num']) : '' ?>"
-                   title="<?php echo JText::_('J2STORE_CARDHOLDER_VALIDATION_ERROR_NUMBER'); ?>"
+                   value="<?php /*echo !empty($vars->prepop['x_card_num']) ? ($vars->prepop['x_card_num']) : '' */?>"
+                   title="<?php /*echo JText::_('J2STORE_CARDHOLDER_VALIDATION_ERROR_NUMBER'); */?>"
             />
             <div class="j2error"></div>
         </td>
     </tr>
     <tr>
-        <td class="field_name"><?php echo JText::_( 'J2STORE_EXPIRY_DATE' ) ?></td>
+        <td class="field_name"><?php /*echo JText::_( 'J2STORE_EXPIRY_DATE' ) */?></td>
         <td>
             <select name="month" class="required number"
-                    title="<?php echo JText::_('J2STORE_EXPIRY_VALIDATION_ERROR_MONTH'); ?>"
+                    title="<?php /*echo JText::_('J2STORE_EXPIRY_VALIDATION_ERROR_MONTH'); */?>"
             >
-                <option value=""><?php echo JText::_('J2STORE_EXPIRY_MONTH'); ?></option>
+                <option value=""><?php /*echo JText::_('J2STORE_EXPIRY_MONTH'); */?></option>
                 <option value="01">01</option>
                 <option value="02">02</option>
                 <option value="03">03</option>
@@ -63,29 +63,29 @@ defined('_JEXEC') or die('Restricted access');
             </select>
             <div class="j2error"></div>
             <select name="year" class="required number"
-                    title="<?php echo JText::_('J2STORE_EXPIRY_VALIDATION_ERROR_YEAR'); ?>"
+                    title="<?php /*echo JText::_('J2STORE_EXPIRY_VALIDATION_ERROR_YEAR'); */?>"
             >
-                <option value=""><?php echo JText::_('J2STORE_EXPIRY_YEAR'); ?></option>
+                <option value=""><?php /*echo JText::_('J2STORE_EXPIRY_YEAR'); */?></option>
                 <?php
-                $two_digit_year = date('y');
+/*                $two_digit_year = date('y');
                 $four_digit_year = date('Y');
-                ?>
-                <?php for($i=$two_digit_year;$i<$two_digit_year+50;$i++) {?>
-                    <option value="<?php echo $four_digit_year;?>"><?php echo $four_digit_year;?></option>
+                */?>
+                <?php /*for($i=$two_digit_year;$i<$two_digit_year+50;$i++) {*/?>
+                    <option value="<?php /*echo $four_digit_year;*/?>"><?php /*echo $four_digit_year;*/?></option>
                     <?php
-                    $four_digit_year++;
-                } ?>
+/*                    $four_digit_year++;
+                } */?>
             </select>
             <div class="j2error"></div>
         </td>
     </tr>
     <tr>
-        <td class="field_name"><?php echo JText::_( 'J2STORE_CARD_CVV' ) ?></td>
+        <td class="field_name"><?php /*echo JText::_( 'J2STORE_CARD_CVV' ) */?></td>
         <td>
             <input type="text" class="required number" name="cardcvv" size="10" value=""
-                   title="<?php echo JText::_('J2STORE_CARD_VALIDATION_ERROR_CVV'); ?>"
+                   title="<?php /*echo JText::_('J2STORE_CARD_VALIDATION_ERROR_CVV'); */?>"
             />
             <div class="j2error"></div>
         </td>
     </tr>
-</table>
+</table>-->

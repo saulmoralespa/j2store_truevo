@@ -3,9 +3,9 @@
 namespace Truevo;
 
 /**
- *  @author Saul Morales Pacheco <info@saulmoralespa.com>
+*  @author Saul Morales Pacheco <info@saulmoralespa.com>
  *
- */
+*/
 class Truevo
 {
 
@@ -22,6 +22,8 @@ class Truevo
     protected $_entity_id;
 
     public $sandbox = false;
+
+    public $urlStatus;
 
     /**
      * Truevo constructor.
@@ -70,6 +72,27 @@ class Truevo
     }
 
     /**
+     * @return string
+     */
+    public function getUrlCheckout()
+    {
+        $url = $this->getUrlBase() . self::VERSION_API . '/checkouts';
+        return $url;
+    }
+
+    public function setUrlStatus($id, $checkout = false)
+    {
+        if ($checkout){
+            $this->urlStatus = $this->getUrlCheckout() . DIRECTORY_SEPARATOR . $id . DIRECTORY_SEPARATOR . "payment" . "?" . http_build_query($this->_paramsAccess());
+        }else{
+            $this->urlStatus = $this->getUrlPayment() . DIRECTORY_SEPARATOR . $id . "?" . http_build_query($this->_paramsAccess());
+        }
+
+        return $this;
+
+    }
+
+    /**
      * @param $params
      * @return bool|string
      * @throws TruevoException
@@ -81,6 +104,19 @@ class Truevo
 
         return $this->_exec($request);
 
+    }
+
+    /**
+     * @param $params
+     * @return bool|string
+     * @throws TruevoException
+     */
+    public function checkout($params)
+    {
+        $data = array_merge($this->_paramsAccess(), $params);
+        $request = array('data' => $data, 'url' => $this->getUrlCheckout());
+
+        return $this->_exec($request);
     }
 
     public function testModeConnector()
@@ -98,6 +134,18 @@ class Truevo
      */
     public function getPaymentStatus($id)
     {
+        $this->setUrlStatus($id);
+        return $this->_exec($id);
+    }
+
+    /**
+     * @param $id
+     * @return bool|string
+     * @throws TruevoException
+     */
+    public function getCheckoutStatus($id)
+    {
+        $this->setUrlStatus($id, true);
         return $this->_exec($id);
     }
 
@@ -113,7 +161,7 @@ class Truevo
         );
     }
 
-    public function resultCodesSuccessfully()
+    public function getCodesSuccessfully()
     {
         return array(
             '000.000.000',
@@ -129,7 +177,7 @@ class Truevo
         );
     }
 
-    public function resultCodesPending()
+    public function getCodesPending()
     {
         return array(
             '000.200.000',
@@ -183,8 +231,7 @@ class Truevo
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($request['data']));
         }else{
-            $urlStatus = $this->getUrlPayment() . DIRECTORY_SEPARATOR . $request . "?" . http_build_query($this->_paramsAccess());
-            curl_setopt($ch, CURLOPT_URL, $urlStatus);
+            curl_setopt($ch, CURLOPT_URL, $this->urlStatus);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
         }
 
